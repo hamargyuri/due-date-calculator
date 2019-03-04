@@ -63,4 +63,12 @@ public class DueDateCalculatorTest {
         assertEquals(submittedAt.plusHours(3*24 + 2*24),
                 dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
     }
+
+    @Test
+    public void testDueDateShiftsToNextWeekWithLessThanEightHours() {
+        LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.FRIDAY).with(LocalTime.of(16, 59));
+        int turnaroundHours = 7;
+        assertEquals(submittedAt.plusHours(16 + 7 + 2*24),
+                dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
+    }
 }
