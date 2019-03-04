@@ -1,3 +1,5 @@
+import exception.DueDateCalculatorException;
+
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,6 +18,12 @@ public class DueDateCalculator {
     private final static LocalTime WORK_DAY_END = LocalTime.of(17, 0);
 
     public LocalDateTime calculateDueDate(LocalDateTime submittedAt, Integer turnaroundTime) {
+        if(!WORKDAYS.contains(submittedAt.getDayOfWeek())) {
+            throw new DueDateCalculatorException("Invalid day - problems must be submitted on workdays.");
+        }
+        if(submittedAt.toLocalTime().isBefore(WORK_DAY_START) || submittedAt.toLocalTime().isAfter(WORK_DAY_END)) {
+            throw new DueDateCalculatorException("Invalid time - problems must be submitted between 9AM - 5PM");
+        }
         return null;
     }
 }
