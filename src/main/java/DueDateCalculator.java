@@ -24,6 +24,6 @@ public class DueDateCalculator {
         if(submittedAt.toLocalTime().isBefore(WORK_DAY_START) || submittedAt.toLocalTime().isAfter(WORK_DAY_END)) {
             throw new DueDateCalculatorException("Invalid time - problems must be submitted between 9AM - 5PM");
         }
-        return null;
+        return submittedAt.plusHours(turnaroundHours);
     }
 }
