@@ -24,13 +24,13 @@ public class DueDateCalculatorTest {
 
     @Test(expected = DueDateCalculatorException.class)
     public void testSubmissionTimeEarly() {
-        LocalDateTime someSunday = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(8,59));
-        dueDateCalculator.calculateDueDate(someSunday, null);
+        LocalDateTime tooEarlyTime = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(8,59));
+        dueDateCalculator.calculateDueDate(tooEarlyTime, null);
     }
 
     @Test(expected = DueDateCalculatorException.class)
     public void testSubmissionTimeLate() {
-        LocalDateTime someSunday = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(17,1));
-        dueDateCalculator.calculateDueDate(someSunday, null);
+        LocalDateTime lateTime = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(17,1));
+        dueDateCalculator.calculateDueDate(lateTime, null);
     }
 }
