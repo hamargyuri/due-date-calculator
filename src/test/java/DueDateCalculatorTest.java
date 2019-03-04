@@ -9,6 +9,10 @@ import java.time.LocalTime;
 import static org.junit.Assert.*;
 
 public class DueDateCalculatorTest {
+    private final static Integer WEEKEND_IN_HOURS = 48;
+    private final static Integer WORKDAY_IN_HOURS = 8;
+    private final static Integer HOURS_BETWEEN_WORKDAYS = 16;
+
     private DueDateCalculator dueDateCalculator;
 
     @Before
@@ -45,7 +49,7 @@ public class DueDateCalculatorTest {
     @Test
     public void testDueSameWeek() {
         LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(9, 0));
-        int turnaroundHours = 4*8;
+        int turnaroundHours = 4 * WORKDAY_IN_HOURS;
         assertEquals(submittedAt.plusDays(4), dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
     }
 
@@ -53,14 +57,15 @@ public class DueDateCalculatorTest {
     public void testDueDateJustShiftsToNextDay() {
         LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.THURSDAY).with(LocalTime.of(15, 0));
         int turnaroundHours = 2;
-        assertEquals(submittedAt.plusHours(2 + 16), dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
+        assertEquals(submittedAt.plusHours(2 + HOURS_BETWEEN_WORKDAYS),
+                dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
     }
 
     @Test
     public void testDueDateJustShiftsToNextWeek() {
         LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.WEDNESDAY).with(LocalTime.of(9, 0));
-        int turnaroundHours = 3*8;
-        assertEquals(submittedAt.plusHours(3*24 + 2*24),
+        int turnaroundHours = 3 * WORKDAY_IN_HOURS;
+        assertEquals(submittedAt.plusHours(3*24 + WEEKEND_IN_HOURS),
                 dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
     }
 
@@ -68,7 +73,7 @@ public class DueDateCalculatorTest {
     public void testDueDateShiftsToNextWeekWithLessThanEightHours() {
         LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.FRIDAY).with(LocalTime.of(16, 59));
         int turnaroundHours = 7;
-        assertEquals(submittedAt.plusHours(16 + 7 + 2*24),
+        assertEquals(submittedAt.plusHours(HOURS_BETWEEN_WORKDAYS + 7 + WEEKEND_IN_HOURS),
                 dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
     }
 }
