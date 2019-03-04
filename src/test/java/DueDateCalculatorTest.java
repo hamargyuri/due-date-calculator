@@ -19,19 +19,19 @@ public class DueDateCalculatorTest {
     @Test(expected = DueDateCalculatorException.class)
     public void testInvalidSubmissionDay() {
         LocalDateTime someSunday = LocalDateTime.now().with(DayOfWeek.SUNDAY).with(LocalTime.of(12,0));
-        dueDateCalculator.calculateDueDate(someSunday, null);
+        dueDateCalculator.calculateDueDate(someSunday, 0);
     }
 
     @Test(expected = DueDateCalculatorException.class)
     public void testSubmissionTimeEarly() {
         LocalDateTime tooEarlyTime = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(8,59));
-        dueDateCalculator.calculateDueDate(tooEarlyTime, null);
+        dueDateCalculator.calculateDueDate(tooEarlyTime, 0);
     }
 
     @Test(expected = DueDateCalculatorException.class)
     public void testSubmissionTimeLate() {
         LocalDateTime lateTime = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(17,0));
-        dueDateCalculator.calculateDueDate(lateTime, null);
+        dueDateCalculator.calculateDueDate(lateTime, 0);
     }
 
     @Test
@@ -51,15 +51,16 @@ public class DueDateCalculatorTest {
 
     @Test
     public void testDueDateJustShiftsToNextDay() {
-        LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.WEDNESDAY).with(LocalTime.of(15, 0));
+        LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.THURSDAY).with(LocalTime.of(15, 0));
         int turnaroundHours = 2;
-        assertEquals(submittedAt.plusHours(16+2), dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
+        assertEquals(submittedAt.plusHours(2 + 16), dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
     }
 
     @Test
     public void testDueDateJustShiftsToNextWeek() {
-        LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.THURSDAY).with(LocalTime.of(9, 0));
-        int turnaroundHours = 2*8;
-        assertEquals(submittedAt.plusHours(4*24), dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
+        LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.WEDNESDAY).with(LocalTime.of(9, 0));
+        int turnaroundHours = 3*8;
+        assertEquals(submittedAt.plusHours(3*24 + 2*24),
+                dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
     }
 }
