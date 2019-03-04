@@ -50,21 +50,14 @@ public class DueDateCalculatorTest {
     }
 
     @Test
-    public void testDueOtherDay() {
-        LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.WEDNESDAY).with(LocalTime.of(10, 5));
-        int turnaroundHours = 8+3;
-        assertEquals(submittedAt.plusHours(24+3), dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
-    }
-
-    @Test
-    public void testDueDateShiftsToNextDay() {
+    public void testDueDateJustShiftsToNextDay() {
         LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.WEDNESDAY).with(LocalTime.of(15, 0));
         int turnaroundHours = 2;
         assertEquals(submittedAt.plusHours(16+2), dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
     }
 
     @Test
-    public void testDueDateShiftsToNextWeek() {
+    public void testDueDateJustShiftsToNextWeek() {
         LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.THURSDAY).with(LocalTime.of(9, 0));
         int turnaroundHours = 2*8;
         assertEquals(submittedAt.plusHours(4*24), dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
