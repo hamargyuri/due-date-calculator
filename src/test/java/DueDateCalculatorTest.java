@@ -21,4 +21,10 @@ public class DueDateCalculatorTest {
         LocalDateTime someSunday = LocalDateTime.now().with(DayOfWeek.SUNDAY).with(LocalTime.of(12,0));
         dueDateCalculator.calculateDueDate(someSunday, null);
     }
+
+    @Test(expected = DueDateCalculatorException.class)
+    public void testSubmissionTimeEarly() {
+        LocalDateTime someSunday = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(8,59));
+        dueDateCalculator.calculateDueDate(someSunday, null);
+    }
 }
