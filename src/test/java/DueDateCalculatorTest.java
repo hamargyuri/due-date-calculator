@@ -41,4 +41,11 @@ public class DueDateCalculatorTest {
         assertEquals(submittedAt.plusHours(turnaroundHours),
                 dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
     }
+
+    @Test
+    public void testDueSameWeek() {
+        LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(9, 0));
+        int turnaroundHours = 4*8;
+        assertEquals(submittedAt.plusDays(4), dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
+    }
 }
