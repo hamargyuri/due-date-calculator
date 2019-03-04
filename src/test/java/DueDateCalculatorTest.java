@@ -30,7 +30,7 @@ public class DueDateCalculatorTest {
 
     @Test(expected = DueDateCalculatorException.class)
     public void testSubmissionTimeLate() {
-        LocalDateTime lateTime = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(17,1));
+        LocalDateTime lateTime = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(17,0));
         dueDateCalculator.calculateDueDate(lateTime, null);
     }
 

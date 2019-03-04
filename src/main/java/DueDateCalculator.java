@@ -14,8 +14,8 @@ public class DueDateCalculator {
             DayOfWeek.THURSDAY,
             DayOfWeek.FRIDAY
     );
-    private final static LocalTime WORK_DAY_START = LocalTime.of(9, 0);
-    private final static LocalTime WORK_DAY_END = LocalTime.of(17, 0);
+    private final static LocalTime WORKDAY_START = LocalTime.of(9, 0);
+    private final static LocalTime WORKDAY_END = LocalTime.of(16, 59);
 
     private LocalDateTime addDaysToDueDate(LocalDateTime dueDate, Integer daysToAdd) {
         if(WORKDAYS.indexOf(dueDate.getDayOfWeek()) + daysToAdd >= WORKDAYS.size()) {
@@ -26,7 +26,7 @@ public class DueDateCalculator {
 
     private LocalDateTime addHoursToDueDate(LocalDateTime dueDate, Integer hoursToAdd) {
         dueDate = dueDate.plusHours(hoursToAdd);
-        if(dueDate.toLocalTime().isAfter(WORK_DAY_END)) {
+        if(dueDate.toLocalTime().isAfter(WORKDAY_END)) {
             dueDate = dueDate.plusHours(16);
         }
         if(!WORKDAYS.contains(dueDate.getDayOfWeek())) {
@@ -39,7 +39,7 @@ public class DueDateCalculator {
         if(!WORKDAYS.contains(submittedAt.getDayOfWeek())) {
             throw new DueDateCalculatorException("Invalid day - problems must be submitted on workdays.");
         }
-        if(submittedAt.toLocalTime().isBefore(WORK_DAY_START) || submittedAt.toLocalTime().isAfter(WORK_DAY_END)) {
+        if(submittedAt.toLocalTime().isBefore(WORKDAY_START) || submittedAt.toLocalTime().isAfter(WORKDAY_END)) {
             throw new DueDateCalculatorException("Invalid time - problems must be submitted between 9AM - 5PM");
         }
 
