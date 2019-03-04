@@ -33,4 +33,12 @@ public class DueDateCalculatorTest {
         LocalDateTime lateTime = LocalDateTime.now().with(DayOfWeek.MONDAY).with(LocalTime.of(17,1));
         dueDateCalculator.calculateDueDate(lateTime, null);
     }
+
+    @Test
+    public void testDueOnSameDay() {
+        LocalDateTime submittedAt = LocalDateTime.now().with(DayOfWeek.TUESDAY).with(LocalTime.of(9, 0));
+        int turnaroundHours = 4;
+        assertEquals(submittedAt.plusHours(turnaroundHours),
+                dueDateCalculator.calculateDueDate(submittedAt, turnaroundHours));
+    }
 }
