@@ -21,6 +21,9 @@ public class DueDateCalculator {
         if(!WORKDAYS.contains(submittedAt.getDayOfWeek())) {
             throw new DueDateCalculatorException("Invalid day - problems must be submitted on workdays.");
         }
+        if(submittedAt.toLocalTime().isBefore(WORK_DAY_START) || submittedAt.toLocalTime().isAfter(WORK_DAY_END)) {
+            throw new DueDateCalculatorException("Invalid time - problems must be submitted between 9AM - 5PM");
+        }
         return null;
     }
 }
